@@ -9,6 +9,6 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 } catch (PDOException $e) {
     // Si la conexión falla, muestra el mensaje de error
-    die('Error en la conexión: ' . $e->getMessage());
+    echo('Error en la conexión: ' . $e->getMessage());
 }
 ?>
