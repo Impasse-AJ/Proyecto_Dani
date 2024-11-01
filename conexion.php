@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
-$dbname = 'empresa';  // Asegúrate de que el nombre coincide con el que creaste
-$user = 'root';               // Usuario de la base de datos, generalmente 'root' en local
-$pass = '';                   // Contraseña del usuario de la base de datos, por lo general vacía en local
+$dbname = 'empresa';
+$user = 'root';               // Usuario
+$pass = '';                   // Contraseña
 
 try {
     // Crea una instancia de PDO para la conexión
