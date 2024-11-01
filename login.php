@@ -23,7 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Redirección según el rol del usuario
         if ($user['tipo'] == 'tecnico') {
-            header('Location: lista_tickets.php');
+            //header('Location: lista_tickets.php');
+            header('Location: crear_ticket.php');
         } else {
             header('Location: mis_tickets.php');
         }
@@ -36,16 +37,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
 </head>
+
 <body>
     <h2>Inicio de Sesión</h2>
-    <?php if ($error): ?>
+    <?php if ($error) { ?>
         <p style="color: red;"><?php echo $error; ?></p>
-    <?php endif; ?>
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <?php } ?>
+
+    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <label for="email">Email:</label>
         <input type="email" name="email" required><br><br>
 
@@ -55,4 +59,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit">Ingresar</button>
     </form>
 </body>
+
 </html>
