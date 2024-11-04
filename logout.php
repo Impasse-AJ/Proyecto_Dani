@@ -3,7 +3,6 @@ require_once 'sesiones.php';
 comprobar_sesion();
 $_SESSION = [];
 session_destroy();	// eliminar la sesion
-setcookie(session_name(), 123, time() - 1000); // eliminar la cookie
 ?>
 
 <!DOCTYPE html>

@@ -11,4 +11,3 @@ try {
     // Si la conexión falla, muestra el mensaje de error
     echo('Error en la conexión: ' . $e->getMessage());
 }
-?>
