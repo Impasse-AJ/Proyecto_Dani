@@ -1,5 +1,5 @@
-CREATE DATABASE empresa;
-USE empresa;
+CREATE DATABASE soporte;
+USE soporte;
 
 -- Tabla de usuarios
 CREATE TABLE usuarios (
