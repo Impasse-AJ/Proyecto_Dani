@@ -35,4 +35,5 @@ CREATE TABLE mensajes (
 INSERT INTO usuarios (email, password, tipo) VALUES
     ('abraham@empresa.com', '1234', 'tecnico'),
     ('alejo@empresa.com', '1234', 'tecnico'),
-    ('alex@empresa.com', '1234', 'tecnico');
+    ('alex@empresa.com', '1234', 'tecnico'),
+    ('empleado1@empresa.com', '1234', 'empleado');
