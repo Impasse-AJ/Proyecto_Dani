@@ -23,10 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Redirección según el rol del usuario
         if ($user['tipo'] == 'tecnico') {
-            //header('Location: lista_tickets.php');
-            header('Location: crear_ticket.php');
-        } else {
             header('Location: mis_tickets.php');
+        } else {
+            header('Location: crear_ticket.php');
         }
     } else {
         // Si los datos son incorrectos, muestra un mensaje de error
