@@ -30,10 +30,45 @@ if (!$ticket) {
 
 $confirmacion = '';
 
+// Función para obtener el historial de mensajes del ticket
+function obtenerHistorialMensajes($ticket_id, $pdo) {
+    $sql = "SELECT id, tecnico_id, fecha, mensaje FROM mensajes WHERE ticket_id = :ticket_id ORDER BY fecha DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['ticket_id' => $ticket_id]);
+    $mensajes = $stmt->fetchAll();
+
+    if (empty($mensajes)) {
+        return "No han habido reportes";
+    }
+    return $mensajes;
+}
+
+// Función para eliminar el ticket y sus mensajes asociados
+function eliminarTicket($ticket_id, $pdo) {
+    // Eliminar mensajes asociados al ticket
+    $sql = "DELETE FROM mensajes WHERE ticket_id = :ticket_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['ticket_id' => $ticket_id]);
+
+    // Eliminar el ticket
+    $sql = "DELETE FROM tickets WHERE id = :ticket_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['ticket_id' => $ticket_id]);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Actualizar el estado del ticket
     if (isset($_POST['estado'])) {
         $nuevo_estado = $_POST['estado'];
+
+        // Si el estado es "cerrado", eliminar el ticket y redirigir
+        if ($nuevo_estado === 'cerrado') {
+            eliminarTicket($ticket_id, $pdo);
+            header("Location: detalle_ticket.php");
+            exit();
+        }
+
+        // Si el estado no es "cerrado", solo actualizar el estado
         $sql = "UPDATE tickets SET estado = :estado WHERE id = :ticket_id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['estado' => $nuevo_estado, 'ticket_id' => $ticket_id]);
@@ -53,6 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confirmacion .= " El mensaje se ha guardado en el historial.";
     }
 }
+
+// Obtener el historial de mensajes
+$historialMensajes = obtenerHistorialMensajes($ticket_id, $pdo);
 ?>
 
 <!DOCTYPE html>
@@ -88,5 +126,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <button type="submit">Guardar Cambios</button>
     </form>
+
+    <!-- Historial de Mensajes -->
+    <h3>Historial de Mensajes</h3>
+    <?php if (is_string($historialMensajes)) { ?>
+        <p><?php echo $historialMensajes; ?></p>
+    <?php } else { ?>
+        <table>
+            <tr>
+                <th>ID Mensaje</th>
+                <th>ID Técnico</th>
+                <th>Fecha/Hora</th>
+                <th>Mensaje</th>
+            </tr>
+            <?php foreach ($historialMensajes as $mensaje) { ?>
+                <tr>
+                    <td><?php echo $mensaje['id']; ?></td>
+                    <td><?php echo $mensaje['tecnico_id']; ?></td>
+                    <td><?php echo $mensaje['fecha']; ?></td>
+                    <td><?php echo htmlspecialchars($mensaje['mensaje']); ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+    <?php } ?>
 </body>
 </html>
