@@ -154,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <!-- Enlace para olvidaste contraseña -->
         <div class="register-link">
-            <p>Has olvidado tu Contraseña?<a href="recuperar.php">Regístrate aquí</a></p>
+            <p>Has olvidado tu Contraseña?<a href="recuperar.php"> Pulsa aquí</a></p>
         </div>
     </div>
 </body>

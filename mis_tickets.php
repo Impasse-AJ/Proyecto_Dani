@@ -27,7 +27,7 @@ $tickets = $stmt->fetchAll();
     <title>Mis Tickets</title>
 </head>
 <body>
-    <h2>Mis Tickets de Soporte</h2>
+    <h2>Mis Tickets</h2>
 
     <?php if (empty($tickets)) { ?>
         <p>No tienes tickets creados.</p>
