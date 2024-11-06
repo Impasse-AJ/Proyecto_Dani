@@ -1,5 +1,6 @@
 <?php
 include 'conexion.php';
+include 'correo.php'; // Incluir archivo con la función de correo
 require 'sesiones.php';
 comprobar_sesion();
 
@@ -27,6 +28,13 @@ if (!$ticket) {
     echo "Ticket no encontrado.";
     exit();
 }
+
+// Obtener el correo electrónico del usuario asociado al ticket
+$sql = "SELECT email FROM usuarios WHERE id = :usuario_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['usuario_id' => $ticket['usuario_id']]);
+$usuario = $stmt->fetch();
+$email_usuario = $usuario['email']; // Email del usuario asociado al ticket
 
 $confirmacion = '';
 
@@ -57,10 +65,12 @@ function eliminarTicket($ticket_id, $pdo) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Actualizar el estado del ticket
-    if (isset($_POST['estado'])) {
-        $nuevo_estado = $_POST['estado'];
+    // Inicializar variables para el estado y mensaje
+    $nuevo_estado = $_POST['estado'] ?? $ticket['estado'];
+    $mensaje_tecnico = trim($_POST['mensaje'] ?? '');
 
+    // Actualizar el estado del ticket
+    if ($nuevo_estado !== $ticket['estado']) {
         // Si el estado es "cerrado", eliminar el ticket y redirigir
         if ($nuevo_estado === 'cerrado') {
             eliminarTicket($ticket_id, $pdo);
@@ -76,16 +86,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Guardar el mensaje en la tabla de mensajes
-    if (isset($_POST['mensaje']) && trim($_POST['mensaje']) !== '') {
-        $mensaje = trim($_POST['mensaje']);
+    if ($mensaje_tecnico !== '') {
         $sql = "INSERT INTO mensajes (ticket_id, tecnico_id, mensaje) VALUES (:ticket_id, :tecnico_id, :mensaje)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'ticket_id' => $ticket_id,
             'tecnico_id' => $_SESSION['user_id'],
-            'mensaje' => $mensaje
+            'mensaje' => $mensaje_tecnico
         ]);
         $confirmacion .= " El mensaje se ha guardado en el historial.";
+    }
+
+    // Enviar correo de actualización al usuario si se cambió el estado o se agregó un mensaje
+    if ($nuevo_estado !== $ticket['estado'] || $mensaje_tecnico !== '') {
+        enviarActualizacionTicket($email_usuario, $ticket_id, $nuevo_estado, $mensaje_tecnico);
     }
 }
 

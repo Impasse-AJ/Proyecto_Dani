@@ -1,0 +1,70 @@
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';  // Asegúrate de tener PHPMailer instalado y autoload configurado
+
+// Configuración de Mailtrap (separada para facilitar cambios)
+function configurarMailtrap(PHPMailer $mail) {
+    $mail->isSMTP();
+    $mail->Host       = 'sandbox.smtp.mailtrap.io';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = '52158799bcfb78'; // Sustituye con tus credenciales de Mailtrap
+    $mail->Password   = '563b2bbd525cbb';
+    $mail->SMTPSecure = 'tls';
+    $mail->Port       = 2525;
+}
+
+// Función para enviar correo de verificación
+function enviarCorreoVerificacion($user_id, $email) {
+    $mail = new PHPMailer(true);
+
+    try {
+        configurarMailtrap($mail);  // Aplicamos configuración de Mailtrap
+
+        // Configuración del correo
+        $mail->setFrom('no-reply@empresa.com', 'Soporte de Empresa');
+        $mail->addAddress($email);
+        $mail->isHTML(true);
+        $mail->Subject = 'Verificación de correo electrónico';
+
+        // Crear enlace de verificación
+        $url_verificacion = "http://localhost/Proyecto_Dani/verificar.php?user_id=$user_id";
+        $mail->Body    = "Necesita verificar su correo. <a href='$url_verificacion'>Pulse aquí para confirmarlo</a>.";
+        $mail->AltBody = "Necesita verificar su correo. Visite el siguiente enlace para confirmar: $url_verificacion";
+
+        $mail->send();
+    } catch (Exception $e) {
+        echo "Error al enviar el correo de verificación: {$mail->ErrorInfo}";
+    }
+}
+
+// Nueva función para enviar un correo de actualización al cambiar el estado del ticket
+function enviarActualizacionTicket($email, $ticket_id, $nuevo_estado, $mensaje_tecnico) {
+    $mail = new PHPMailer(true);
+
+    try {
+        configurarMailtrap($mail);  // Aplicamos configuración de Mailtrap
+
+        // Configuración del correo
+        $mail->setFrom('no-reply@empresa.com', 'Soporte de Empresa');
+        $mail->addAddress($email);
+        $mail->isHTML(true);
+        $mail->Subject = "Actualización en el Ticket #$ticket_id";
+
+        // Contenido del correo
+        $mail->Body    = "
+            <p>Estimado empleado,</p>
+            <p>Su ticket con ID <strong>$ticket_id</strong> ha cambiado de estado a <strong>$nuevo_estado</strong>.</p>
+            <p><strong>Mensaje del técnico:</strong> $mensaje_tecnico</p>
+            <p>Gracias por su paciencia,</p>
+            <p>Equipo de Soporte</p>
+        ";
+        $mail->AltBody = "Su ticket #$ticket_id ha cambiado a estado '$nuevo_estado'. Mensaje del técnico: $mensaje_tecnico";
+
+        $mail->send();
+    } catch (Exception $e) {
+        echo "Error al enviar el correo de actualización: {$mail->ErrorInfo}";
+    }
+}
+?>

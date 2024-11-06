@@ -6,7 +6,8 @@ CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    tipo ENUM('empleado', 'tecnico') NOT NULL
+    tipo ENUM('empleado', 'tecnico') NOT NULL,
+    verificado INT DEFAULT 0  -- Nueva columna para estado de verificación (0 = no verificado, 1 = verificado)
 );
 
 -- Tabla de tickets con clave foránea a usuarios

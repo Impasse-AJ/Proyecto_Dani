@@ -1,57 +1,58 @@
 <?php
 session_start();
-include 'conexion.php';  // Conexión a la base de datos
+include 'conexion.php';
+include 'correo.php';
 
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "Formato de correo electrónico no válido.";
         exit();
     } else {
-
-        $dominio = substr($email, strpos($email, '@') + 1);  // Extraemos el dominio
+        $dominio = substr($email, strpos($email, '@') + 1);
 
         if ($dominio == 'empresa.com') {
-            $tipo = 'empleado';  // Es un empleado
+            $tipo = 'empleado';
         } elseif ($dominio == 'soporte.empresa.com') {
-            $tipo = 'tecnico';  // Es un técnico
+            $tipo = 'tecnico';
         } else {
             $error = "El dominio del correo electrónico no es válido para ningún tipo de usuario.";
         }
 
-        // Verificar si las contraseñas coinciden
         if ($password !== $confirm_password) {
             $error = "Las contraseñas no coinciden.";
         }
-
 
         if (!$error) {
             $sql = "SELECT * FROM usuarios WHERE email = '$email'";
             $result = $pdo->query($sql);
             $user = $result->fetch();
-            // Verificar si el usuario ya existe
+
             if ($user) {
                 $error = "Este correo electrónico ya está registrado.";
             } else {
-                // Insertar el nuevo usuario en la base de datos 
                 $sql = "INSERT INTO usuarios (email, password, tipo) VALUES ('$email', '$password', '$tipo')";
                 $pdo->query($sql);
 
-                // Redirigir al login
-                header('Location: login.php');
+                // Obtener el último ID insertado
+                $user_id = $pdo->lastInsertId();
+
+                // Enviar correo de verificación
+                enviarCorreoVerificacion($user_id, $email);
+
+                header('Location: registro.php');
                 exit();
             }
         }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

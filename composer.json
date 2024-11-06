@@ -1,8 +1,8 @@
 {
-    "name": "diurno/proyecto_dani",
+    "name": "richard/proyecto_dani",
     "autoload": {
         "psr-4": {
-            "Diurno\\ProyectoDani\\": "src/"
+            "Richard\\ProyectoDani\\": "src/"
         }
     },
     "authors": [
