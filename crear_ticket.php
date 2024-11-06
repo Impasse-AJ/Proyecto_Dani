@@ -1,5 +1,6 @@
 <?php
-include 'conexion.php';
+include 'correo.php'; // Incluir el archivo que contiene la función de correo
+include 'bd.php'; // Incluir el archivo con las funciones de base de datos
 require 'sesiones.php';
 comprobar_sesion();
 
@@ -18,10 +19,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "La descripción no puede exceder los 1000 caracteres.";
     } else {
         // Inserción en la base de datos
-        $usuario_id = $_SESSION['user_id'];  // ID del usuario en sesión, técnico o empleado
-        $sql = "INSERT INTO tickets (usuario_id, asunto, descripcion) VALUES ('$usuario_id', '$asunto', '$descripcion')";
+        $usuario_id = $_SESSION['user_id'];  // ID del usuario en sesión
 
-        if ($pdo->query($sql)) {
+        $ticket_id = insertarTicket($pdo, $usuario_id, $asunto, $descripcion);
+
+        if ($ticket_id) {
+            // Obtener el correo del usuario para enviarle la confirmación
+            $email = obtenerEmailUsuario($pdo, $usuario_id);
+
+            // Enviar correo de confirmación
+            enviarCreacionTicket($email, $ticket_id, $asunto, $descripcion);
+
             $confirmacion = "Ticket creado exitosamente.";
         } else {
             $error = "Hubo un problema al crear el ticket. Inténtalo de nuevo.";
@@ -32,10 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Crear Ticket</title>
 </head>
+
 <body>
     <h2>Crear un Nuevo Ticket</h2>
 
@@ -58,4 +68,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <br>
     <a href="mis_tickets.php">Ver Mis Tickets</a> <!-- Enlace para ver los tickets del usuario -->
 </body>
+
 </html>

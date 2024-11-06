@@ -1,6 +1,6 @@
 <?php
-include 'conexion.php';
 require 'sesiones.php';
+include 'bd.php'; // Incluir el archivo con las funciones de base de datos
 
 comprobar_sesion();
 
@@ -10,9 +10,8 @@ if ($_SESSION['tipo'] !== 'tecnico') {
     exit();
 }
 
-// Obtener todos los tickets
-$sql = "SELECT id, asunto, estado, fecha_creacion FROM tickets ORDER BY fecha_creacion ASC";
-$tickets = $pdo->query($sql)->fetchAll();
+// Obtener todos los tickets desde bd.php
+$tickets = obtenerTodosLosTickets($pdo);
 ?>
 
 <!DOCTYPE html>

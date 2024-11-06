@@ -1,11 +1,13 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';  // Asegúrate de tener PHPMailer instalado y autoload configurado
 
 // Configuración de Mailtrap (separada para facilitar cambios)
-function configurarMailtrap(PHPMailer $mail) {
+function configurarMailtrap(PHPMailer $mail)
+{
     $mail->isSMTP();
     $mail->Host       = 'sandbox.smtp.mailtrap.io';
     $mail->SMTPAuth   = true;
@@ -16,7 +18,8 @@ function configurarMailtrap(PHPMailer $mail) {
 }
 
 // Función para enviar correo de verificación
-function enviarCorreoVerificacion($user_id, $email) {
+function enviarCorreoVerificacion($user_id, $email)
+{
     $mail = new PHPMailer(true);
 
     try {
@@ -40,7 +43,8 @@ function enviarCorreoVerificacion($user_id, $email) {
 }
 
 // Nueva función para enviar un correo de actualización al cambiar el estado del ticket
-function enviarActualizacionTicket($email, $ticket_id, $nuevo_estado, $mensaje_tecnico) {
+function enviarActualizacionTicket($email, $ticket_id, $nuevo_estado, $mensaje_tecnico)
+{
     $mail = new PHPMailer(true);
 
     try {
@@ -67,4 +71,32 @@ function enviarActualizacionTicket($email, $ticket_id, $nuevo_estado, $mensaje_t
         echo "Error al enviar el correo de actualización: {$mail->ErrorInfo}";
     }
 }
-?>
+function enviarCreacionTicket($email, $ticket_id, $asunto, $descripcion)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        configurarMailtrap($mail);  // Aplicamos configuración de Mailtrap
+
+        // Configuración del correo
+        $mail->setFrom('no-reply@empresa.com', 'Soporte de Empresa');
+        $mail->addAddress($email);
+        $mail->isHTML(true);
+        $mail->Subject = "Confirmación de Creación del Ticket #$ticket_id";
+
+        // Contenido del correo
+        $mail->Body    = "
+            <p>Estimado usuario,</p>
+            <p>Su ticket con ID <strong>$ticket_id</strong> ha sido creado exitosamente.</p>
+            <p><strong>Asunto:</strong> $asunto</p>
+            <p><strong>Descripción:</strong> $descripcion</p>
+            <p>Gracias por contactarnos. Nuestro equipo de soporte se pondrá en contacto con usted en breve.</p>
+            <p>Equipo de Soporte</p>
+        ";
+        $mail->AltBody = "Su ticket #$ticket_id ha sido creado. Asunto: $asunto. Descripción: $descripcion.";
+
+        $mail->send();
+    } catch (Exception $e) {
+        echo "Error al enviar el correo de creación: {$mail->ErrorInfo}";
+    }
+}

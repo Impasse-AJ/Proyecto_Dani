@@ -1,6 +1,6 @@
 <?php
-include 'conexion.php';
 include 'correo.php'; // Incluir archivo con la función de correo
+include 'bd.php'; // Incluir archivo con funciones de base de datos
 require 'sesiones.php';
 comprobar_sesion();
 
@@ -18,82 +18,34 @@ if (!isset($_GET['id'])) {
 
 $ticket_id = $_GET['id'];
 
-// Obtener los detalles del ticket
-$sql = "SELECT * FROM tickets WHERE id = :ticket_id";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['ticket_id' => $ticket_id]);
-$ticket = $stmt->fetch();
-
+// Obtener detalles del ticket y el email del usuario asociado
+$ticket = obtenerDetallesTicket($pdo, $ticket_id);
 if (!$ticket) {
     echo "Ticket no encontrado.";
     exit();
 }
-
-// Obtener el correo electrónico del usuario asociado al ticket
-$sql = "SELECT email FROM usuarios WHERE id = :usuario_id";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['usuario_id' => $ticket['usuario_id']]);
-$usuario = $stmt->fetch();
-$email_usuario = $usuario['email']; // Email del usuario asociado al ticket
+$email_usuario = obtenerEmailUsuario($pdo, $ticket['usuario_id']);
 
 $confirmacion = '';
 
-// Función para obtener el historial de mensajes del ticket
-function obtenerHistorialMensajes($ticket_id, $pdo) {
-    $sql = "SELECT id, tecnico_id, fecha, mensaje FROM mensajes WHERE ticket_id = :ticket_id ORDER BY fecha DESC";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['ticket_id' => $ticket_id]);
-    $mensajes = $stmt->fetchAll();
-
-    if (empty($mensajes)) {
-        return "No han habido reportes";
-    }
-    return $mensajes;
-}
-
-// Función para eliminar el ticket y sus mensajes asociados
-function eliminarTicket($ticket_id, $pdo) {
-    // Eliminar mensajes asociados al ticket
-    $sql = "DELETE FROM mensajes WHERE ticket_id = :ticket_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['ticket_id' => $ticket_id]);
-
-    // Eliminar el ticket
-    $sql = "DELETE FROM tickets WHERE id = :ticket_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['ticket_id' => $ticket_id]);
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Inicializar variables para el estado y mensaje
     $nuevo_estado = $_POST['estado'] ?? $ticket['estado'];
     $mensaje_tecnico = trim($_POST['mensaje'] ?? '');
 
-    // Actualizar el estado del ticket
+    // Actualizar el estado del ticket y eliminar si es "cerrado"
     if ($nuevo_estado !== $ticket['estado']) {
-        // Si el estado es "cerrado", eliminar el ticket y redirigir
         if ($nuevo_estado === 'cerrado') {
-            eliminarTicket($ticket_id, $pdo);
+            eliminarTicket($pdo, $ticket_id);
             header("Location: detalle_ticket.php");
             exit();
         }
-
-        // Si el estado no es "cerrado", solo actualizar el estado
-        $sql = "UPDATE tickets SET estado = :estado WHERE id = :ticket_id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['estado' => $nuevo_estado, 'ticket_id' => $ticket_id]);
+        actualizarEstadoTicket($pdo, $ticket_id, $nuevo_estado);
         $confirmacion = "El estado del ticket #$ticket_id se ha actualizado a '$nuevo_estado'.";
     }
 
     // Guardar el mensaje en la tabla de mensajes
     if ($mensaje_tecnico !== '') {
-        $sql = "INSERT INTO mensajes (ticket_id, tecnico_id, mensaje) VALUES (:ticket_id, :tecnico_id, :mensaje)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'ticket_id' => $ticket_id,
-            'tecnico_id' => $_SESSION['user_id'],
-            'mensaje' => $mensaje_tecnico
-        ]);
+        guardarMensaje($pdo, $ticket_id, $_SESSION['user_id'], $mensaje_tecnico);
         $confirmacion .= " El mensaje se ha guardado en el historial.";
     }
 
@@ -104,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Obtener el historial de mensajes
-$historialMensajes = obtenerHistorialMensajes($ticket_id, $pdo);
+$historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
 ?>
 
 <!DOCTYPE html>
@@ -125,7 +77,6 @@ $historialMensajes = obtenerHistorialMensajes($ticket_id, $pdo);
     <?php } ?>
 
     <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
-        <!-- Actualizar Estado -->
         <label for="estado">Nuevo Estado:</label>
         <select name="estado" required>
             <option value="creado" <?php if ($ticket['estado'] == 'creado') echo 'selected'; ?>>Creado</option>
@@ -134,14 +85,12 @@ $historialMensajes = obtenerHistorialMensajes($ticket_id, $pdo);
             <option value="cerrado" <?php if ($ticket['estado'] == 'cerrado') echo 'selected'; ?>>Cerrado</option>
         </select><br><br>
 
-        <!-- Enviar Mensaje -->
         <label for="mensaje">Mensaje de seguimiento:</label><br>
         <textarea name="mensaje"></textarea><br><br>
 
         <button type="submit">Guardar Cambios</button>
     </form>
 
-    <!-- Historial de Mensajes -->
     <h3>Historial de Mensajes</h3>
     <?php if (is_string($historialMensajes)) { ?>
         <p><?php echo $historialMensajes; ?></p>

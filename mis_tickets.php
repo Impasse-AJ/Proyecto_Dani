@@ -1,6 +1,6 @@
 <?php
-include 'conexion.php';
 require 'sesiones.php';
+include 'bd.php'; // Incluir archivo con funciones de base de datos
 comprobar_sesion();
 
 // Verificar si el usuario es un empleado
@@ -10,14 +10,10 @@ if ($_SESSION['tipo'] !== 'empleado') {
     exit();
 }
 
-// Obtener el ID del usuario en sesión
+// Obtener el ID del usuario en sesión y sus tickets
 $usuario_id = $_SESSION['user_id'];
+$tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de bd.php
 
-// Consulta para obtener solo los tickets del empleado en sesión, en orden descendente
-$sql = "SELECT id, asunto, estado, fecha_creacion FROM tickets WHERE usuario_id = :usuario_id ORDER BY fecha_creacion DESC";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['usuario_id' => $usuario_id]);
-$tickets = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
