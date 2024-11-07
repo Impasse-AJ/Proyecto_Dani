@@ -7,46 +7,58 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100%;
+    min-height: 100vh; /* Hace que el contenido esté centrado verticalmente */
+    text-align: center; /* Centra el texto en todo el cuerpo */
 }
 
+/* Contenedor principal */
 .container {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 30px;
     width: 100%;
     max-width: 400px;
-    text-align: center;
 }
 
+/* Estilo del título */
 h2 {
     margin-bottom: 20px;
     color: #333;
+    font-size: 24px;
 }
 
+/* Estilo del formulario */
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-label {
-    margin-bottom: 5px;
-    text-align: center;
     width: 100%;
 }
 
-input[type="email"], input[type="password"] {
+/* Estilo de los labels */
+label {
+    margin-bottom: 5px;
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+    width: 100%;
+    text-align: center; /* Asegura que los labels estén centrados */
+}
+
+/* Estilo de los inputs de texto y contraseña */
+input[type="email"],
+input[type="password"] {
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
     width: 100%;
-    max-width: 320px;
+    max-width: 320px; /* Limita el ancho del campo */
 }
 
+/* Estilo del botón */
 button {
     padding: 10px;
     background-color: #007bff;
@@ -60,26 +72,33 @@ button {
     max-width: 320px;
 }
 
+/* Estilo del hover del botón */
 button:hover {
     background-color: #0056b3;
 }
 
-.error {
+/* Estilo para el mensaje de error */
+p.error {
     color: red;
     margin-bottom: 15px;
     font-size: 14px;
 }
 
+/* Estilo para los enlaces */
 a {
     color: #007bff;
     text-decoration: none;
+    font-size: 14px;
+    display: block;
+    margin-top: 15px;
 }
 
+/* Estilo para el hover del enlace */
 a:hover {
     text-decoration: underline;
 }
 
+/* Estilo del enlace de registro */
 .register-link {
-    margin-top: 15px;
     font-size: 14px;
 }
