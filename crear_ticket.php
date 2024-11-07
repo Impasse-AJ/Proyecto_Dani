@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Crear Ticket</title>
+    <link rel="stylesheet" href="estilos/crearTicket.css">
 </head>
 
 <body>
