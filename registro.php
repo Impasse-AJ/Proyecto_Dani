@@ -39,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
+    <link rel="stylesheet" href="estilos/registro.css">
 </head>
 
 <body>

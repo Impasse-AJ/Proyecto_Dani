@@ -1,17 +1,15 @@
 {
-    "name": "richard/proyecto_dani",
+    "name": "diurno/proyecto_dani",
     "autoload": {
         "psr-4": {
-            "Richard\\ProyectoDani\\": "src/"
+            "Diurno\\ProyectoDani\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "Impasse-AJ",
-            "email": "abraham-paula@hotmail.com"
+            "name": "Alejandro4092",
+            "email": "acobomarcos@gmail.com"
         }
     ],
-    "require": {
-        "phpmailer/phpmailer": "^6.9"
-    }
+    "require": {}
 }
