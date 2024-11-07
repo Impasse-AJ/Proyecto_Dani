@@ -33,8 +33,8 @@ CREATE TABLE mensajes (
 );
 
 -- Insertar datos de técnicos en la tabla de usuarios
-INSERT INTO usuarios (email, password, tipo) VALUES
-    ('abraham@empresa.com', '$2y$10$.Nv85hA0moj4J05x30kE0eg.4gvNXbyk8Ti2Fcyj7m13xq.rOEoM2', 'tecnico'),
-    ('alejo@empresa.com', '$2y$10$Or3EsqlxG0HUetfHEODN7.G.dIfhlNw30SjpbHjg7E2cVjvAxV27u', 'tecnico'),
-    ('alex@empresa.com', '$2y$10$jywtKbPKRlXFxMZrBXUInOQJUdQG7N0jDO1DaKP6c687nIeR.EIZu', 'tecnico'),
-    ('empleado1@empresa.com', '$2y$10$Kqu8hAbbuAprxq7kMzEc8uW5lwwo/wIBJacByYVrO.Ea8RLU6m.K2', 'empleado');
+INSERT INTO usuarios (email, password, tipo, verificado) VALUES
+    ('abraham@empresa.com', '$2y$10$.Nv85hA0moj4J05x30kE0eg.4gvNXbyk8Ti2Fcyj7m13xq.rOEoM2', 'tecnico',1),
+    ('alejo@empresa.com', '$2y$10$Or3EsqlxG0HUetfHEODN7.G.dIfhlNw30SjpbHjg7E2cVjvAxV27u', 'tecnico',1),
+    ('alex@empresa.com', '$2y$10$jywtKbPKRlXFxMZrBXUInOQJUdQG7N0jDO1DaKP6c687nIeR.EIZu', 'tecnico',1),
+    ('empleado1@empresa.com', '$2y$10$Kqu8hAbbuAprxq7kMzEc8uW5lwwo/wIBJacByYVrO.Ea8RLU6m.K2', 'empleado',1);
