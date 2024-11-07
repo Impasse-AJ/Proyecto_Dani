@@ -14,9 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM usuarios WHERE email = '$email'";
     $result = $pdo->query($sql);
     $user = $result->fetch();
+
     // Verificación de usuario
     if ($user && password_verify($password, $user['password'])) {
-        // Si el usuario existe, inicia sesión y guarda la información en la sesión
+       
+        if($user['verificado'] == 1){
+            // Si el usuario existe, inicia sesión y guarda la información en la sesión
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['tipo'] = $user['tipo'];
 
@@ -26,10 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             header('Location: crear_ticket.php');
         }
-    } else {
-        // Si los datos son incorrectos, muestra un mensaje de error
-        $error = "Usuario o contraseña incorrectos.";
+    }else{
+        $error = "Falta hacer la verificacion";
     }
+} else {
+    // Si los datos son incorrectos, muestra un mensaje de error
+    $error = "Usuario o contraseña incorrectos.";
+}
 }
 ?>
 
