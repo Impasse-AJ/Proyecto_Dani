@@ -11,12 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Consulta directa para verificar el email y la contraseña
-    $sql = "SELECT * FROM usuarios WHERE email = '$email' AND password = '$password'";
+    $sql = "SELECT * FROM usuarios WHERE email = '$email'";
     $result = $pdo->query($sql);
     $user = $result->fetch();
-
     // Verificación de usuario
-    if ($user) {
+    if ($user && password_verify($password, $user['password'])) {
         // Si el usuario existe, inicia sesión y guarda la información en la sesión
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['tipo'] = $user['tipo'];
