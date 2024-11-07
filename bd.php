@@ -98,10 +98,11 @@ function usuarioExiste($pdo, $email)
 }
 
 // Inserta un nuevo usuario en la base de datos y devuelve su ID
-function registrarUsuario($pdo, $email, $password, $tipo)
-{
+// Inserta un nuevo usuario en la base de datos con contraseña hasheada y devuelve su ID
+function registrarUsuario($pdo, $email, $password, $tipo) {
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hashear la contraseña
     $sql = "INSERT INTO usuarios (email, password, tipo) VALUES (:email, :password, :tipo)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(['email' => $email, 'password' => $password, 'tipo' => $tipo]);
+    $stmt->execute(['email' => $email, 'password' => $hashed_password, 'tipo' => $tipo]);
     return $pdo->lastInsertId();
 }

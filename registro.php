@@ -43,27 +43,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <h2>Registro de Usuario</h2>
+    <div class="container">
+        <h2>Registro de Usuario</h2>
 
-    <?php if ($error) { ?>
-        <p style="color: red;"><?php echo $error; ?></p>
-    <?php } ?>
+        <?php if ($error) { ?>
+            <p class="error"><?php echo $error; ?></p>
+        <?php } ?>
 
-    <form method="POST" action="registro.php">
-        <label for="email">Correo Electrónico:</label><br>
-        <input type="email" name="email" required><br><br>
+        <form method="POST" action="registro.php">
+            <label for="email">Correo Electrónico:</label><br>
+            <input type="email" name="email" required><br>
 
-        <label for="password">Contraseña:</label><br>
-        <input type="password" name="password" required><br><br>
+            <label for="password">Contraseña:</label><br>
+            <input type="password" name="password" required><br>
 
-        <label for="confirm_password">Confirmar Contraseña:</label><br>
-        <input type="password" name="confirm_password" required><br><br>
+            <label for="confirm_password">Confirmar Contraseña:</label><br>
+            <input type="password" name="confirm_password" required><br>
 
-        <button type="submit">Registrar</button>
-    </form>
+            <button type="submit">Registrar</button>
+        </form>
 
-    <br>
-    <a href="login.php">¿Ya tienes cuenta? Inicia sesión</a>
+        <a href="login.php" class="register-link">¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
 </body>
 
 </html>
