@@ -6,7 +6,7 @@ comprobar_sesion();
 
 // Verificar que el usuario sea técnico
 if ($_SESSION['tipo'] !== 'tecnico') {
-    header("Location: no_autorizado.php");
+    header("Location: mis_tickets.php");
     exit();
 }
 
