@@ -21,6 +21,7 @@ $tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de 
 <head>
     <meta charset="UTF-8">
     <title>Mis Tickets</title>
+    <link rel="stylesheet" href="estilos/misTickets.css">
 </head>
 <body>
     <h2>Mis Tickets</h2>
