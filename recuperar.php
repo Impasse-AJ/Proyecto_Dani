@@ -1,8 +1,7 @@
 <?php
 session_start();
 include 'conexion.php'; // Conexión a la base de datos
-
-// Variables para mensajes
+include 'correo.php';   // Funciones de correo
 $mensaje = '';
 $mensaje_error = '';
 
@@ -16,20 +15,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $result->fetch();
 
     if ($user) {
-        // Si el usuario existe, mostramos el formulario para restablecer la contraseña
-        if (isset($_POST['nueva_contraseña'])) {
-            $nueva_contraseña = $_POST['nueva_contraseña'];
-            $confirmar_contraseña = $_POST['confirmar_contraseña'];
+        // Generar el enlace de recuperación con el ID del usuario
+        $user_id = $user['id'];
+        $url_recuperacion = "http://localhost/Proyecto_Dani/restablecer.php?user_id=$user_id";
+
+        // Enviar el correo de recuperación
+        $mail = new PHPMailer(true);
+        try {
+            configurarMailtrap($email);  // Configuración de Mailtrap
+
+            // Configuración del correo
+            $mail->setFrom('no-reply@empresa.com', 'Soporte de Empresa');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Recuperación de Contraseña';
+
+            // Crear cuerpo del mensaje
+            $mail->Body = "
+                <p>Hola,</p>
+                <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta.</p>
+                <p>Para restablecer su contraseña, haga clic en el siguiente enlace:</p>
+                <a href='$url_recuperacion'>Restablecer mi contraseña</a>
+                <p>Si no solicitó este cambio, puede ignorar este mensaje.</p>
+                <p>Gracias,<br>Equipo de Soporte</p>
+            ";
+            $mail->AltBody = "Hemos recibido una solicitud para restablecer la contraseña de su cuenta. Para restablecer su contraseña, visite: $url_recuperacion";
+
+            // Enviar correo
+            $mail->send();
             
-            // Verificar que las contraseñas coinciden
-            if ($nueva_contraseña == $confirmar_contraseña) {
-                // Actualizar la contraseña en la base de datos
-                $sql = "UPDATE usuarios SET password = '$nueva_contraseña' WHERE email = '$email'";
-                $pdo->exec($sql);
-                $mensaje = "Tu contraseña ha sido cambiada exitosamente.";
-            } else {
-                $mensaje_error = "Las contraseñas no coinciden. Intenta nuevamente.";
-            }
+            // Mensaje de éxito
+            $mensaje = "Se ha enviado un correo con instrucciones para restablecer tu contraseña.";
+        } catch (Exception $e) {
+            // Si ocurre un error en el envío del correo
+            $mensaje_error = "Error al enviar el correo de recuperación: {$mail->ErrorInfo}";
         }
     } else {
         $mensaje_error = "No hemos encontrado ningún usuario con ese correo electrónico.";
@@ -42,95 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Recuperar Contraseña</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100%;
-        }
-
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        label {
-            margin-bottom: 5px;
-            text-align: center;
-            width: 100%;
-        }
-
-        input[type="email"], input[type="password"] {
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            width: 100%;
-            max-width: 320px;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 100%;
-            max-width: 320px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .error, .success {
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-
-        .error {
-            color: red;
-        }
-
-        .success {
-            color: green;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
+    <link rel="stylesheet" href="estilos/recuperar.css">
+    
 </head>
 
 <body>
