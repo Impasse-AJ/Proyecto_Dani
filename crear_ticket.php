@@ -1,7 +1,9 @@
 <?php
+
 include 'correo.php'; // Incluir el archivo que contiene la función de correo
 include 'bd.php'; // Incluir el archivo con las funciones de base de datos
 require 'sesiones.php';
+include 'cabecera.php'; // Incluir el archivo que contiene la cabezera
 comprobar_sesion();
 
 $error = '';
@@ -40,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="es">
+    
 
 <head>
     <meta charset="UTF-8">
