@@ -1,6 +1,7 @@
 <?php
 require 'sesiones.php';
 include 'bd.php'; // Incluir archivo con funciones de base de datos
+include 'cabecera.php'; // Incluir el archivo que contiene la cabezera
 comprobar_sesion();
 
 // Verificar si el usuario es un empleado
