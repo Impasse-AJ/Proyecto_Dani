@@ -35,7 +35,7 @@ function obtenerTodosLosTickets($pdo)
 // Función para obtener los tickets de un usuario específico
 function obtenerTicketsUsuario($pdo, $usuario_id)
 {
-    $sql = "SELECT id, asunto, estado, fecha_creacion FROM tickets WHERE usuario_id = :usuario_id ORDER BY fecha_creacion DESC";
+    $sql = "SELECT id, asunto, estado, fecha_creacion FROM tickets WHERE usuario_id = :usuario_id ORDER BY fecha_creacion ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['usuario_id' => $usuario_id]);
     return $stmt->fetchAll();

@@ -18,11 +18,13 @@ $tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de 
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Mis Tickets</title>
     <link rel="stylesheet" href="estilos/misTickets.css">
 </head>
+
 <body>
     <h2>Mis Tickets</h2>
 
@@ -39,8 +41,8 @@ $tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de 
             <?php foreach ($tickets as $ticket) { ?>
                 <tr>
                     <td><?php echo $ticket['id']; ?></td>
-                    <td><?php echo htmlspecialchars($ticket['asunto']); ?></td>
-                    <td><?php echo $ticket['estado']; ?></td>
+                    <td><?php echo htmlspecialchars(strtoupper($ticket['asunto'])); ?></td>
+                    <td><?php echo strtoupper($ticket['estado']); ?></td>
                     <td><?php echo $ticket['fecha_creacion']; ?></td>
                 </tr>
             <?php } ?>
@@ -50,4 +52,5 @@ $tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de 
     <br>
     <a href="crear_ticket.php">Crear Nuevo Ticket</a> <!-- Enlace para crear un nuevo ticket -->
 </body>
+
 </html>
