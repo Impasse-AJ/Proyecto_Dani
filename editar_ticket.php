@@ -62,6 +62,7 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="stylesheet" href="estilos/editar_ticket.css">
     <meta charset="UTF-8">
     <title>Editar Ticket #<?php echo $ticket['id']; ?></title>
 </head>
@@ -77,15 +78,15 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
     <?php } ?>
 
     <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
-        <label for="estado">Nuevo Estado:</label>
+        <label for="estado">Nuevo Estado</label>
         <select name="estado" required>
             <option value="creado" <?php if ($ticket['estado'] == 'creado') echo 'selected'; ?>>Creado</option>
             <option value="en proceso" <?php if ($ticket['estado'] == 'en proceso') echo 'selected'; ?>>En proceso</option>
             <option value="solucionado" <?php if ($ticket['estado'] == 'solucionado') echo 'selected'; ?>>Solucionado</option>
             <option value="cerrado" <?php if ($ticket['estado'] == 'cerrado') echo 'selected'; ?>>Cerrado</option>
-        </select><br><br>
+        </select><br>
 
-        <label for="mensaje">Mensaje de seguimiento:</label><br>
+        <label for="mensaje">Mensaje de seguimiento</label><br>
         <textarea name="mensaje"></textarea><br><br>
 
         <button type="submit">Guardar Cambios</button>

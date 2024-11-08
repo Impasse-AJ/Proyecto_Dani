@@ -19,6 +19,7 @@ $tickets = obtenerTodosLosTickets($pdo);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Tickets</title>
+    <link rel="stylesheet" href="estilos/detalle_ticket.css">
 </head>
 <body>
     <h2>Gestión de Tickets</h2>
