@@ -100,3 +100,35 @@ function enviarCreacionTicket($email, $ticket_id, $asunto, $descripcion)
         echo "Error al enviar el correo de creación: {$mail->ErrorInfo}";
     }
 }
+// Función para enviar un correo de recuperación de contraseña
+function enviarCorreoRecuperacion($email, $user_id)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        configurarMailtrap($mail); // Configuración de Mailtrap
+
+        // Configuración del correo
+        $mail->setFrom('no-reply@empresa.com', 'Soporte de Empresa');
+        $mail->addAddress($email);
+        $mail->isHTML(true);
+        $mail->Subject = 'Recuperación de Contraseña';
+
+        // Crear enlace y cuerpo del mensaje
+        $url_recuperacion = "http://localhost/Proyecto_Dani/restablecer.php?user_id=$user_id";
+        $mail->Body = "
+            <p>Hola,</p>
+            <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta.</p>
+            <p>Para restablecer su contraseña, haga clic en el siguiente enlace:</p>
+            <a href='$url_recuperacion'>Restablecer mi contraseña</a>
+            <p>Si no solicitó este cambio, puede ignorar este mensaje.</p>
+            <p>Gracias,<br>Equipo de Soporte</p>
+        ";
+        $mail->AltBody = "Para restablecer su contraseña, visite: $url_recuperacion";
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return "Error al enviar el correo de recuperación: {$mail->ErrorInfo}";
+    }
+}
