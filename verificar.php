@@ -2,17 +2,17 @@
 include 'conexion.php';
 
 // Verificar que se haya recibido el user_id
-if (!isset($_GET['user_id'])) {
+if (!isset($_GET['seguridad'])) {
     echo "ID de usuario no especificado.";
     exit();
 }
 
-$user_id = $_GET['user_id'];
+$numSeguridad = $_GET['seguridad'];
 
 // Actualizar el estado de verificación en la base de datos
-$sql = "UPDATE usuarios SET verificado = 1 WHERE seguridad = :user_id";
+$sql = "UPDATE usuarios SET verificado = 1 WHERE seguridad = :numSeguridad";
 $stmt = $pdo->prepare($sql);
-$stmt->execute(['user_id' => $user_id]);
+$stmt->execute(['numSeguridad' => $numSeguridad]);
 
 // Comprobar si la actualización fue exitosa
 if ($stmt->rowCount() > 0) {
