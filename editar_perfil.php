@@ -51,7 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" name="nombre" value="<?php echo isset($user['nombre']) ? htmlspecialchars($user['nombre']) : ''; ?>" required>
 
             <label>Teléfono</label>
-            <input type="text" name="telefono" value="<?php echo isset($user['telefono']) ? htmlspecialchars($user['telefono']) : ''; ?> " required>
+            <input type="text" name="telefono" value="<?php echo isset($user['telefono']) ? htmlspecialchars($user['telefono']) : ''; ?>" required pattern="^6\d{8}$" >
+
 
             <label>Departamento</label>
             <input type="text" name="direccion" value="<?php echo isset($user['direccion']) ? htmlspecialchars($user['direccion']) : ''; ?>" required>
