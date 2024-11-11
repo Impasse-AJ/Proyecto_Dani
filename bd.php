@@ -115,6 +115,22 @@ function obtenerUsuarioPorEmail($pdo, $email)
     $stmt->execute(['email' => $email]);
     return $stmt->fetch();
 }
+
+// Función para obtener información de usuario por ID
+function obtenerUsuario($pdo, $user_id) {
+    $sql = "SELECT * FROM usuarios WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$user_id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Función para actualizar información de usuario
+function actualizarUsuario($pdo, $user_id, $telefono, $nombre, $direccion) {
+    $sql = "UPDATE usuarios SET telefono = ?, nombre = ?, direccion = ? WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$telefono, $nombre, $direccion, $user_id]);
+}
+
 function crearNumeroAleatorio($pdo, $user_id) {
     srand (time());
     $rnd1 = rand(1, 1000000000000000000);
