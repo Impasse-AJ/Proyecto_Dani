@@ -21,10 +21,11 @@ $empleados = obtenerListaEmpleados($pdo);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Empleados</title>
+    <link rel="stylesheet" href="estilos/lista_empleados.css">
 </head>
 <body>
     <h2>Lista de Empleados</h2>
-    <table border="1">
+    <table>
         <tr>
             <th>Nombre</th>
             <th>Email</th>
