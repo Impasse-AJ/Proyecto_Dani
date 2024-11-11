@@ -1,6 +1,7 @@
 <?php
 include 'conexion.php';
 require 'sesiones.php';
+include 'cabecera.php';
 comprobar_sesion();
 
 $user_id = $_SESSION['user_id'];

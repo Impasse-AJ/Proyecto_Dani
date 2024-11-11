@@ -101,7 +101,7 @@
         
         <ul id="menu">
             <li>
-                <a href="#">☰ Menú</a>
+                <a href="">☰ Menú</a>
                 <ul>
                     <li><a href="editar_perfil.php">Perfil</a></li>
                     <li><a href="logout.php">Cerrar sesión</a></li>
