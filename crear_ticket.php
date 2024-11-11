@@ -8,6 +8,10 @@ comprobar_sesion();
 
 $error = '';
 $confirmacion = '';
+if ($_SESSION['tipo'] === 'tecnico') {
+    header("Location: detalle_ticket.php");
+    exit();
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validación de datos del formulario
