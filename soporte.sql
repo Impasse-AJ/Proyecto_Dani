@@ -10,7 +10,7 @@ CREATE TABLE usuarios (
     verificado INT DEFAULT 0,  -- Estado de verificación (0 = no verificado, 1 = verificado)
     telefono VARCHAR(15),     
     nombre VARCHAR(50),         
-    direección VARCHAR(50)    
+    direccion VARCHAR(50)    
 );
 
 -- Tabla de tickets con clave foránea a usuarios
