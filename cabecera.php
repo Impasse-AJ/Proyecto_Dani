@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <?php require_once 'sesiones.php';?>
+    <?php require_once 'sesiones.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Usuario</title>
@@ -25,8 +25,10 @@
             padding: 0;
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
+        /* Elementos principales del menú */
         #menu > li {
             position: relative;
         }
@@ -39,6 +41,11 @@
             font-size: 20px;
             font-weight: bold;
             transition: background-color 0.3s;
+        }
+
+        /* Botón "Inicio" alineado a la derecha */
+        #menu > .menu-item-inicio {
+            margin-left: auto;
         }
 
         #menu > li > a:hover {
@@ -84,24 +91,36 @@
             display: block;
         }
         header a{
-            background-color: #333;
+            background: none;
+            
         }
     </style>
 </head>
 <body>
     <header>
-        
         <ul id="menu">
+            <!-- Botón Menú con submenú desplegable -->
             <li>
-                <a href="">☰ Menú</a>
+                <a href="#">☰ Menú</a>
                 <ul>
                     <li><a href="editar_perfil.php">Perfil</a></li>
+                    
+                    <!-- Enlace adicional si el usuario es técnico -->
+                    <?php if ($_SESSION['tipo'] === 'tecnico') : ?>
+                        <li><a href="lista_empleados.php">Lista de Empleados</a></li>
+                    <?php endif; ?>
+
                     <li><a href="logout.php">Cerrar sesión</a></li>
                 </ul>
             </li>
+
+            <!-- Botón Inicio alineado a la derecha -->
+            <li class="menu-item-inicio">
+                <a href="detalle_ticket.php">Inicio</a>
+            </li>
         </ul>
     </header>
-    <div style="height: 50px;"></div> <!-- Espacio para el header fijo -->
 
+    <div style="height: 50px;"></div> <!-- Espacio para el header fijo -->
 </body>
 </html>
