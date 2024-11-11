@@ -35,7 +35,7 @@ $tickets = obtenerTodosLosTickets($pdo);
             <tr>
                 <td><a href="editar_ticket.php?id=<?php echo $ticket['id']; ?>"><?php echo $ticket['id']; ?></a></td>
                 <td><?php echo htmlspecialchars($ticket['asunto']); ?></td>
-                <td><?php echo $ticket['estado']; ?></td>
+                <td><?php echo strtoupper($ticket['estado']); ?></td>
                 <td><?php echo $ticket['fecha_creacion']; ?></td>
             </tr>
         <?php } ?>

@@ -60,16 +60,9 @@ p {
 
 /* Estilo para el enlace */
 a {
-    display: inline-block;
     margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
+    padding: 50px 0px;
+    color: gray;
     text-decoration: none;
     border-radius: 5px;
-    text-align: center;
-}
-
-a:hover {
-    background-color: #2980b9;
 }

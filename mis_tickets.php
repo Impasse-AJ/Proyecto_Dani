@@ -52,7 +52,6 @@ $tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de 
 
     <br>
     <a href="crear_ticket.php">Crear Nuevo Ticket</a> 
-    <a href="editar_perfil.php">Mi perfil</a>
 </body>
 
 </html>
