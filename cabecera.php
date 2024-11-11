@@ -6,14 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Usuario</title>
     <style>
-        /* Estilo global */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
-
         /* Estilos para la cabecera */
         header {
             background-color: #333;
@@ -109,5 +101,7 @@
             </li>
         </ul>
     </header>
+    <div style="height: 50px;"></div> <!-- Espacio para el header fijo -->
+
 </body>
 </html>
