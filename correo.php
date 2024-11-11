@@ -101,7 +101,7 @@ function enviarCreacionTicket($email, $ticket_id, $asunto, $descripcion)
     }
 }
 // Función para enviar un correo de recuperación de contraseña
-function enviarCorreoRecuperacion($email, $user_id)
+function enviarCorreoRecuperacion($email, $numSeguridad)
 {
     $mail = new PHPMailer(true);
 
@@ -115,7 +115,7 @@ function enviarCorreoRecuperacion($email, $user_id)
         $mail->Subject = 'Recuperación de Contraseña';
 
         // Crear enlace y cuerpo del mensaje
-        $url_recuperacion = "http://localhost/Proyecto_Dani/restablecer.php?user_id=$user_id";
+        $url_recuperacion = "http://localhost/Proyecto_Dani/restablecer.php?seguridad=$numSeguridad";
         $mail->Body = "
             <p>Hola,</p>
             <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta.</p>

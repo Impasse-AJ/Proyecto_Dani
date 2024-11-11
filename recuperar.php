@@ -10,11 +10,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verificar si el correo existe en la base de datos
     $user = obtenerUsuarioPorEmail($pdo, $email);
-
+    
     if ($user) {
         $user_id = $user['id'];
-        $resultado_envio = enviarCorreoRecuperacion($email, $user_id);
-
+        crearNumeroAleatorio($pdo, $user_id);
+        $sql = "SELECT seguridad FROM usuarios WHERE id = :user_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['user_id' => $user_id]);
+        $seguridad = $stmt->fetchColumn();
+        $resultado_envio = enviarCorreoRecuperacion($email, $seguridad);
         if ($resultado_envio === true) {
             $mensaje = "Se ha enviado un correo con instrucciones para restablecer tu contraseña.";
         } else {

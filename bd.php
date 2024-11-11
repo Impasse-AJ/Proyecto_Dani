@@ -115,3 +115,9 @@ function obtenerUsuarioPorEmail($pdo, $email)
     $stmt->execute(['email' => $email]);
     return $stmt->fetch();
 }
+function crearNumeroAleatorio($pdo, $user_id) {
+    $rnd = rand(1, 1000000000000000000);
+    $sql = "UPDATE usuarios SET seguridad = :seguridad WHERE id = :user_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['seguridad' => $rnd, 'user_id' => $user_id]);
+}

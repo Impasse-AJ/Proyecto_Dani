@@ -7,11 +7,12 @@ $mensaje = '';
 $mensaje_error = '';
 
 // Verificar si el parámetro 'user_id' está presente y es válido
-$user_id = $_GET['user_id'] ?? null;
-if ($user_id) {
-    $consulta = "SELECT * FROM usuarios WHERE id = :user_id";
+$numSeguridad = $_GET['seguridad'] ?? null;
+if ($numSeguridad) {
+    $consulta = "SELECT * FROM usuarios WHERE seguridad = :numSeguridad";
     $stmt = $pdo->prepare($consulta);
-    $stmt->execute(['user_id' => $user_id]);
+    $stmt->execute(['numSeguridad' => $numSeguridad]);
+
 
     // Verificar si el usuario existe
     if ($stmt->rowCount() > 0) {
@@ -24,11 +25,11 @@ if ($user_id) {
             if ($nueva_contraseña == $confirmar_contraseña) {
                 // Encriptar la nueva contraseña
                 $nueva_contraseña_hash = password_hash($nueva_contraseña, PASSWORD_DEFAULT);
-                
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 // Actualizar la contraseña en la base de datos
                 $sql = "UPDATE usuarios SET password = :password WHERE id = :user_id";
                 $stmt_update = $pdo->prepare($sql);
-                $stmt_update->execute(['password' => $nueva_contraseña_hash, 'user_id' => $user_id]);
+                $stmt_update->execute(['password' => $nueva_contraseña_hash, 'user_id' => $user['id']]);
                 
                 // Comprobar si la actualización fue exitosa
                 if ($stmt_update->rowCount() > 0) {
@@ -69,7 +70,7 @@ if ($user_id) {
 
         <!-- Formulario para ingresar la nueva contraseña -->
         <?php if (empty($mensaje) && empty($mensaje_error) && $stmt->rowCount() > 0) { ?>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?user_id=$user_id"; ?>">
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?seguridad=$numSeguridad"; ?>">
                 <label for="nueva_contraseña">Nueva Contraseña:</label>
                 <input type="password" name="nueva_contraseña" required><br><br>
 
