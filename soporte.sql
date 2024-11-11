@@ -11,7 +11,7 @@ CREATE TABLE usuarios (
     telefono VARCHAR(15),     
     nombre VARCHAR(50),         
     direccion VARCHAR(50),
-    seguridad INT DEFAULT 0    
+    seguridad VARCHAR(100)   
 );
 
 -- Tabla de tickets con clave foránea a usuarios

@@ -121,7 +121,7 @@ function crearNumeroAleatorio($pdo, $user_id) {
     $rnd2 = rand(1, 1000000000000000000);
     $rnd3 = rand(1, 1000000000000000000);
     $rnd4 = rand(1, 1000000000000000000);
-    $rnd = "$rnd1" . "$rnd2" . "$rnd3" . "$rnd4";
+    $rnd = "$rnd1"."$rnd2"."$rnd3" . "$rnd4";
     $sql = "UPDATE usuarios SET seguridad = :seguridad WHERE id = :user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['seguridad' => $rnd, 'user_id' => $user_id]);
