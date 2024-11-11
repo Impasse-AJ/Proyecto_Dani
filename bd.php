@@ -40,6 +40,12 @@ function obtenerTicketsUsuario($pdo, $usuario_id)
     $stmt->execute(['usuario_id' => $usuario_id]);
     return $stmt->fetchAll();
 }
+function obtenerListaEmpleados($pdo){
+    $sql = "SELECT nombre,email,direccion,telefono FROM usuarios WHERE tipo = 'empleado'";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
 
 // Función para obtener detalles de un ticket específico
 function obtenerDetallesTicket($pdo, $ticket_id)
