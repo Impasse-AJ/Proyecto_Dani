@@ -116,6 +116,7 @@ function obtenerUsuarioPorEmail($pdo, $email)
     return $stmt->fetch();
 }
 function crearNumeroAleatorio($pdo, $user_id) {
+    srand (time());
     $rnd1 = rand(1, 1000000000000000000);
     $rnd2 = rand(1, 1000000000000000000);
     $rnd3 = rand(1, 1000000000000000000);
