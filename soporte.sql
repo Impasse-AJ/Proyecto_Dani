@@ -7,7 +7,10 @@ CREATE TABLE usuarios (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     tipo ENUM('empleado', 'tecnico') NOT NULL,
-    verificado INT DEFAULT 0  -- Nueva columna para estado de verificación (0 = no verificado, 1 = verificado)
+    verificado INT DEFAULT 0,  -- Estado de verificación (0 = no verificado, 1 = verificado)
+    telefono VARCHAR(15),     
+    nombre VARCHAR(50),         
+    direección VARCHAR(50)    
 );
 
 -- Tabla de tickets con clave foránea a usuarios
