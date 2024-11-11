@@ -25,7 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Registrar usuario y enviar correo de verificación
             $user_id = registrarUsuario($pdo, $email, $password, $tipo);
-            enviarCorreoVerificacion($user_id, $email);
+            crearNumeroAleatorio($pdo,$user_id);
+            $sql = "SELECT seguridad FROM usuarios WHERE id = :user_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['user_id' => $user_id]);
+            $seguridad = $stmt->fetchColumn();
+            enviarCorreoVerificacion($seguridad, $email);
             header('Location: registro.php');
             exit();
         }

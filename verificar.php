@@ -10,7 +10,7 @@ if (!isset($_GET['user_id'])) {
 $user_id = $_GET['user_id'];
 
 // Actualizar el estado de verificación en la base de datos
-$sql = "UPDATE usuarios SET verificado = 1 WHERE id = :user_id";
+$sql = "UPDATE usuarios SET verificado = 1 WHERE seguridad = :user_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['user_id' => $user_id]);
 

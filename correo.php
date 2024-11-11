@@ -18,7 +18,7 @@ function configurarMailtrap(PHPMailer $mail)
 }
 
 // Función para enviar correo de verificación
-function enviarCorreoVerificacion($user_id, $email)
+function enviarCorreoVerificacion($numSeguridad, $email)
 {
     $mail = new PHPMailer(true);
 
@@ -32,7 +32,7 @@ function enviarCorreoVerificacion($user_id, $email)
         $mail->Subject = 'Verificación de correo electrónico';
 
         // Crear enlace de verificación
-        $url_verificacion = "http://localhost/Proyecto_Dani/verificar.php?user_id=$user_id";
+        $url_verificacion = "http://localhost/Proyecto_Dani/verificar.php?seguridad=$numSeguridad";
         $mail->Body    = "Necesita verificar su correo. <a href='$url_verificacion'>Pulse aquí para confirmarlo</a>.";
         $mail->AltBody = "Necesita verificar su correo. Visite el siguiente enlace para confirmar: $url_verificacion";
 
