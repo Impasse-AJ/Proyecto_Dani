@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Perfil de Usuario</title>
+    <link rel="stylesheet" href="editar_perfil.php">
 </head>
 <body>
     <h2>Perfil de Usuario</h2>
