@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Perfil de Usuario</title>
-    <link rel="stylesheet" href="editar_perfil.php">
+    <link rel="stylesheet" href="Estilos/editar_perfil.css">
 </head>
 <body>
     <h2>Perfil de Usuario</h2>
@@ -46,14 +46,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php else: ?>
         <!-- Mostrar formulario solo si no se ha actualizado el perfil -->
         <form method="POST" action="">
-            <label>Nombre:</label>
-            <input type="text" name="nombre" value="<?php echo isset($user['nombre']) ? htmlspecialchars($user['nombre']) : ''; ?>">
+            <label>Nombre</label>
+            <input type="text" name="nombre" value="<?php echo isset($user['nombre']) ? htmlspecialchars($user['nombre']) : ''; ?>" required>
 
-            <label>Teléfono:</label>
-            <input type="text" name="telefono" value="<?php echo isset($user['telefono']) ? htmlspecialchars($user['telefono']) : ''; ?>">
+            <label>Teléfono</label>
+            <input type="text" name="telefono" value="<?php echo isset($user['telefono']) ? htmlspecialchars($user['telefono']) : ''; ?> " required>
 
-            <label>Departamento:</label>
-            <input type="text" name="direccion" value="<?php echo isset($user['direccion']) ? htmlspecialchars($user['direccion']) : ''; ?>">
+            <label>Departamento</label>
+            <input type="text" name="direccion" value="<?php echo isset($user['direccion']) ? htmlspecialchars($user['direccion']) : ''; ?>" required>
 
             <button type="submit">Guardar Cambios</button>
         </form>
