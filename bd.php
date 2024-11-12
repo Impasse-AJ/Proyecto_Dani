@@ -40,7 +40,8 @@ function obtenerTicketsUsuario($pdo, $usuario_id)
     $stmt->execute(['usuario_id' => $usuario_id]);
     return $stmt->fetchAll();
 }
-function obtenerListaEmpleados($pdo){
+function obtenerListaEmpleados($pdo)
+{
     $sql = "SELECT nombre,email,direccion,telefono FROM usuarios WHERE tipo = 'empleado'";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
@@ -123,7 +124,8 @@ function obtenerUsuarioPorEmail($pdo, $email)
 }
 
 // Función para obtener información de usuario por ID
-function obtenerUsuario($pdo, $user_id) {
+function obtenerUsuario($pdo, $user_id)
+{
     $sql = "SELECT * FROM usuarios WHERE id = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user_id]);
@@ -131,19 +133,26 @@ function obtenerUsuario($pdo, $user_id) {
 }
 
 // Función para actualizar información de usuario
-function actualizarUsuario($pdo, $user_id, $telefono, $nombre, $direccion) {
-    $sql = "UPDATE usuarios SET telefono = ?, nombre = ?, direccion = ? WHERE id = ?";
+function actualizarUsuario($pdo, $user_id, $telefono, $nombre, $direccion)
+{
+    $sql = "UPDATE usuarios SET telefono = :telefono, nombre = :nombre, direccion = :direccion WHERE id = :user_id";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$telefono, $nombre, $direccion, $user_id]);
+    $stmt->execute([
+        ':telefono' => $telefono,
+        ':nombre' => $nombre,
+        ':direccion' => $direccion,
+        ':user_id' => $user_id
+    ]);
 }
 
-function crearNumeroAleatorio($pdo, $user_id) {
-    srand (time());
+function crearNumeroAleatorio($pdo, $user_id)
+{
+    srand(time());
     $rnd1 = rand(1, 1000000000000000000);
     $rnd2 = rand(1, 1000000000000000000);
     $rnd3 = rand(1, 1000000000000000000);
     $rnd4 = rand(1, 1000000000000000000);
-    $rnd = "$rnd1"."$rnd2"."$rnd3" . "$rnd4";
+    $rnd = "$rnd1" . "$rnd2" . "$rnd3" . "$rnd4";
     $sql = "UPDATE usuarios SET seguridad = :seguridad WHERE id = :user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['seguridad' => $rnd, 'user_id' => $user_id]);
