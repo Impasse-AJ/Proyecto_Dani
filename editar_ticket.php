@@ -5,7 +5,7 @@ require 'sesiones.php';
 comprobar_sesion();
 
 // Verificar que el usuario sea técnico
-if ($_SESSION['tipo'] !== 'tecnico') {
+if ($_SESSION['tipo'] !== 'tecnico' && $_SESSION['tipo'] !== 'empleado') {
     header("Location: mis_tickets.php");
     exit();
 }
