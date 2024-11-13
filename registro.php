@@ -3,6 +3,7 @@ include 'bd.php'; // Funciones de base de datos
 include 'correo.php'; // Funciones de correo
 
 $error = '';
+$mensaje = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
@@ -31,8 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute(['user_id' => $user_id]);
             $seguridad = $stmt->fetchColumn();
             enviarCorreoVerificacion($seguridad, $email);
-            header('Location: registro.php');
-            exit();
+            // header('Location: registro.php');
+            $mensaje = "Datos enviados. Revise su bandeja de entrada para verificar la cuenta.";
+            // exit();
         }
     }
 }
@@ -48,12 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div class="container">
+<div class="container">
         <h2>Registro de Usuario</h2>
 
         <?php if ($error) { ?>
             <p class="error"><?php echo $error; ?></p>
         <?php } ?>
+
+        <?php if ($mensaje) { ?>
+            <p style="color: green; font-weight: bold;"><?php echo $mensaje; ?></p>
+        <?php } else { ?>
 
         <form method="POST" action="registro.php">
             <label for="email">Correo Electrónico:</label><br>
@@ -67,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit">Registrar</button>
         </form>
-
+        <?php } ?>
         <a href="login.php" class="register-link">¿Ya tienes cuenta? Inicia sesión</a>
     </div>
 </body>
