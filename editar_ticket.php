@@ -5,10 +5,6 @@ require 'sesiones.php';
 comprobar_sesion();
 
 // Verificar que el usuario sea técnico
-if ($_SESSION['tipo'] !== 'tecnico' && $_SESSION['tipo'] !== 'empleado') {
-    header("Location: mis_tickets.php");
-    exit();
-}
 
 // Verificar que se haya especificado el ID del ticket
 if (!isset($_GET['id'])) {
@@ -77,6 +73,39 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
         <p style="color: green;"><?php echo $confirmacion; ?></p>
     <?php } ?>
 
+    <h3>Historial de Mensajes</h3>
+    <?php if (is_string($historialMensajes)) { ?>
+        <p><?php echo $historialMensajes; ?></p>
+    <?php } else { ?>
+        <table>
+            <tr>
+                <th>ID Mensaje</th>
+                <th>Correo</th>
+                <th>Fecha/Hora</th>
+                <th>Mensaje</th>
+            </tr>
+            <?php foreach ($historialMensajes as $mensaje) {
+                // Si el mensaje fue enviado por un técnico (tecnico_id no es NULL)
+                if ($mensaje['tecnico_id']) {
+                    // Obtener el correo del técnico usando su ID
+                    $correo = obtenerCorreoTecnico($pdo, $mensaje['tecnico_id']);
+                } else {
+                    // Si el mensaje fue enviado por el usuario (tecnico_id es NULL)
+                    // Obtener el correo del usuario usando su ID
+                    $correo = obtenerEmailUsuario($pdo, $mensaje['usuario_id']);
+                }
+            ?>
+                <tr>
+                    <td><?php echo $mensaje['id']; ?></td>
+                    <td><?php echo $correo ? htmlspecialchars($correo) : 'Correo no disponible'; ?></td>
+                    <td><?php echo $mensaje['fecha']; ?></td>
+                    <td><?php echo htmlspecialchars($mensaje['mensaje']); ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+    <?php } ?>
+
+    <!-- El formulario siempre debe mostrarse independientemente del historial de mensajes -->
     <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
         <label for="estado">Nuevo Estado</label>
         <select name="estado" required>
@@ -92,26 +121,6 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
         <button type="submit">Guardar Cambios</button>
     </form>
 
-    <h3>Historial de Mensajes</h3>
-    <?php if (is_string($historialMensajes)) { ?>
-        <p><?php echo $historialMensajes; ?></p>
-    <?php } else { ?>
-        <table>
-            <tr>
-                <th>ID Mensaje</th>
-                <th>ID Técnico</th>
-                <th>Fecha/Hora</th>
-                <th>Mensaje</th>
-            </tr>
-            <?php foreach ($historialMensajes as $mensaje) { ?>
-                <tr>
-                    <td><?php echo $mensaje['id']; ?></td>
-                    <td><?php echo $mensaje['tecnico_id']; ?></td>
-                    <td><?php echo $mensaje['fecha']; ?></td>
-                    <td><?php echo htmlspecialchars($mensaje['mensaje']); ?></td>
-                </tr>
-            <?php } ?>
-        </table>
-    <?php } ?>
 </body>
 </html>
+

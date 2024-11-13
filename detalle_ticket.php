@@ -4,8 +4,8 @@ include 'bd.php'; // Incluir el archivo con las funciones de base de datos
 include 'cabecera.php';
 comprobar_sesion();
 
-// Verificar que el usuario sea técnico
-if ($_SESSION['tipo'] !== 'tecnico') {
+// Verificar que el usuario sea técnico o empleado (o cualquier otro rol que deban tener acceso)
+if ($_SESSION['tipo'] !== 'tecnico' && $_SESSION['tipo'] !== 'empleado') {
     header("Location: mis_tickets.php");
     exit();
 }
@@ -42,3 +42,4 @@ $tickets = obtenerTodosLosTickets($pdo);
     </table>
 </body>
 </html>
+

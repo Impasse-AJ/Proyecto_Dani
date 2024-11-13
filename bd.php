@@ -24,6 +24,8 @@ function obtenerEmailUsuario($pdo, $usuario_id)
     return $usuario ? $usuario['email'] : null; // Devuelve el correo o null si no se encuentra
 }
 
+
+
 // Función para obtener todos los tickets
 function obtenerTodosLosTickets($pdo)
 {
@@ -60,7 +62,7 @@ function obtenerDetallesTicket($pdo, $ticket_id)
 // Función para obtener el historial de mensajes de un ticket
 function obtenerHistorialMensajes($pdo, $ticket_id) 
 {
-    $sql = "SELECT id, tecnico_id, fecha, mensaje FROM mensajes WHERE ticket_id = :ticket_id ORDER BY fecha DESC";
+    $sql = "SELECT id, tecnico_id, fecha, mensaje FROM mensajes WHERE ticket_id = :ticket_id ORDER BY fecha ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['ticket_id' => $ticket_id]);
     $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -160,3 +162,12 @@ function crearNumeroAleatorio($pdo, $user_id)
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['seguridad' => $rnd, 'user_id' => $user_id]);
 }
+function obtenerCorreoTecnico($pdo, $tecnico_id) {
+    $stmt = $pdo->prepare("SELECT email FROM usuarios WHERE id = :id AND tipo = 'tecnico' OR tipo='empleado'");
+    $stmt->execute(['id' => $tecnico_id]);
+    $tecnico = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $tecnico ? $tecnico['email'] : null;
+}
+
+
+
