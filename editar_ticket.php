@@ -4,12 +4,6 @@ include 'bd.php'; // Incluir archivo con funciones de base de datos
 require 'sesiones.php';
 comprobar_sesion();
 
-// Verificar que el usuario sea técnico
-if ($_SESSION['tipo'] !== 'tecnico') {
-    header("Location: mis_tickets.php");
-    exit();
-}
-
 // Verificar que se haya especificado el ID del ticket
 if (!isset($_GET['id'])) {
     echo "ID de ticket no especificado.";
@@ -26,37 +20,38 @@ if (!$ticket) {
 }
 $email_usuario = obtenerEmailUsuario($pdo, $ticket['usuario_id']);
 
+// Obtener el historial de mensajes
+$historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
+
 $confirmacion = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nuevo_estado = $_POST['estado'] ?? $ticket['estado'];
-    $mensaje_tecnico = trim($_POST['mensaje'] ?? '');
-
+    $mensaje_usuario = trim($_POST['mensaje'] ?? '');
+    
     // Actualizar el estado del ticket y eliminar si es "cerrado"
     if ($nuevo_estado !== $ticket['estado']) {
         if ($nuevo_estado === 'cerrado') {
             eliminarTicket($pdo, $ticket_id);
-            header("Location: detalle_ticket.php");
+            header("Location: mis_tickets.php");
             exit();
         }
         actualizarEstadoTicket($pdo, $ticket_id, $nuevo_estado);
         $confirmacion = "El estado del ticket #$ticket_id se ha actualizado a '$nuevo_estado'.";
     }
 
-    // Guardar el mensaje en la tabla de mensajes
-    if ($mensaje_tecnico !== '') {
-        guardarMensaje($pdo, $ticket_id, $_SESSION['user_id'], $mensaje_tecnico);
+    // Guardar el mensaje en la tabla de mensajes, independientemente del tipo de usuario
+    if ($mensaje_usuario !== '') {
+        guardarMensaje($pdo, $ticket_id, $_SESSION['user_id'], $mensaje_usuario);
         $confirmacion .= " El mensaje se ha guardado en el historial.";
     }
 
     // Enviar correo de actualización al usuario si se cambió el estado o se agregó un mensaje
-    if ($nuevo_estado !== $ticket['estado'] || $mensaje_tecnico !== '') {
-        enviarActualizacionTicket($email_usuario, $ticket_id, $nuevo_estado, $mensaje_tecnico);
+    if ($nuevo_estado !== $ticket['estado'] || $mensaje_usuario !== '') {
+        enviarActualizacionTicket($email_usuario, $ticket_id, $nuevo_estado, $mensaje_usuario);
     }
 }
 
-// Obtener el historial de mensajes
-$historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
 ?>
 
 <!DOCTYPE html>
@@ -99,14 +94,14 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
         <table>
             <tr>
                 <th>ID Mensaje</th>
-                <th>ID Técnico</th>
+                <th>ID Usuario</th>
                 <th>Fecha/Hora</th>
                 <th>Mensaje</th>
             </tr>
             <?php foreach ($historialMensajes as $mensaje) { ?>
                 <tr>
                     <td><?php echo $mensaje['id']; ?></td>
-                    <td><?php echo $mensaje['tecnico_id']; ?></td>
+                    <td><?php echo $mensaje['usuario_id']; ?></td>
                     <td><?php echo $mensaje['fecha']; ?></td>
                     <td><?php echo htmlspecialchars($mensaje['mensaje']); ?></td>
                 </tr>

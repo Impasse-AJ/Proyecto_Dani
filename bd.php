@@ -58,14 +58,16 @@ function obtenerDetallesTicket($pdo, $ticket_id)
 }
 
 // Función para obtener el historial de mensajes de un ticket
-function obtenerHistorialMensajes($pdo, $ticket_id)
+function obtenerHistorialMensajes($pdo, $ticket_id) 
 {
-    $sql = "SELECT id, tecnico_id, fecha, mensaje FROM mensajes WHERE ticket_id = :ticket_id ORDER BY fecha DESC";
+    $sql = "SELECT id, tecnico_id AS usuario_id, fecha, mensaje FROM mensajes WHERE ticket_id = :ticket_id ORDER BY fecha DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['ticket_id' => $ticket_id]);
-    $mensajes = $stmt->fetchAll();
+    $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
     return empty($mensajes) ? "No han habido reportes" : $mensajes;
 }
+
 
 // Función para eliminar un ticket y sus mensajes asociados
 function eliminarTicket($pdo, $ticket_id)
