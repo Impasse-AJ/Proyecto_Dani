@@ -5,7 +5,7 @@ include 'cabecera.php';
 comprobar_sesion();
 
 // Verificar que el usuario sea técnico o empleado (o cualquier otro rol que deban tener acceso)
-if ($_SESSION['tipo'] !== 'tecnico' && $_SESSION['tipo'] !== 'empleado') {
+if ($_SESSION['tipo'] !== 'tecnico') {
     header("Location: mis_tickets.php");
     exit();
 }
