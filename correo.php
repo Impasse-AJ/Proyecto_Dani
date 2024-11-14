@@ -11,8 +11,8 @@ function configurarMailtrap(PHPMailer $mail)
     $mail->isSMTP();
     $mail->Host       = 'sandbox.smtp.mailtrap.io';
     $mail->SMTPAuth   = true;
-    $mail->Username   = '52158799bcfb78'; // Sustituye con tus credenciales de Mailtrap
-    $mail->Password   = '563b2bbd525cbb';
+    $mail->Username   = 'a14fcf38a6b238'; // Sustituye con tus credenciales de Mailtrap
+    $mail->Password   = 'ecdc2e80bdb569';
     $mail->SMTPSecure = 'tls';
     $mail->Port       = 2525;
 }
