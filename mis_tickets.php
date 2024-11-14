@@ -41,7 +41,7 @@ $tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de 
             </tr>
             <?php foreach ($tickets as $ticket) { ?>
                 <tr>
-                    <td><?php echo $ticket['id']; ?></td>
+                <td><a href="editar_ticket.php?id=<?php echo $ticket['id']; ?>"><?php echo $ticket['id']; ?></a></td>
                     <td><?php echo htmlspecialchars(strtoupper($ticket['asunto'])); ?></td>
                     <td><?php echo strtoupper($ticket['estado']); ?></td>
                     <td><?php echo $ticket['fecha_creacion']; ?></td>
@@ -52,6 +52,7 @@ $tickets = obtenerTicketsUsuario($pdo, $usuario_id); // Llamar a la función de 
 
     <br>
     <a href="crear_ticket.php">Crear Nuevo Ticket</a> 
+    
 </body>
 
 </html>
