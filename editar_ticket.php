@@ -106,6 +106,9 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
     <?php } ?>
 
     <!-- El formulario siempre debe mostrarse independientemente del historial de mensajes -->
+     
+    <?php if ($_SESSION['tipo'] === 'tecnico') { ?>
+        
     <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
         <label for="estado">Nuevo Estado</label>
         <select name="estado" required>
@@ -114,12 +117,26 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
             <option value="solucionado" <?php if ($ticket['estado'] == 'solucionado') echo 'selected'; ?>>Solucionado</option>
             <option value="cerrado" <?php if ($ticket['estado'] == 'cerrado') echo 'selected'; ?>>Cerrado</option>
         </select><br>
+      
 
         <label for="mensaje">Mensaje de seguimiento</label><br>
         <textarea name="mensaje"></textarea><br><br>
 
         <button type="submit">Guardar Cambios</button>
     </form>
+    <?php  } ?>
+    <?php if ($_SESSION['tipo'] === 'empleado') { ?>
+        
+        <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
+          
+          
+    
+            <label for="mensaje">Mensaje de seguimiento</label><br>
+            <textarea name="mensaje"></textarea><br><br>
+    
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        <?php  } ?>
 
 </body>
 </html>
