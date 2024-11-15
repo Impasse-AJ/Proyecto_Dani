@@ -2,6 +2,7 @@
 include 'correo.php'; // Incluir archivo con la función de correo
 include 'bd.php'; // Incluir archivo con funciones de base de datos
 require 'sesiones.php';
+include 'cabecera.php'; // Incluir el archivo que contiene la cabezera
 comprobar_sesion();
 
 // Verificar que el usuario sea técnico
@@ -57,11 +58,13 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<link rel="stylesheet" href="estilos/editar_ticket.css">
+    <link rel="stylesheet" href="estilos/editar_ticket.css">
     <meta charset="UTF-8">
     <title>Editar Ticket #<?php echo $ticket['id']; ?></title>
 </head>
+
 <body>
     <h2>Editar Ticket #<?php echo $ticket['id']; ?></h2>
     <p><strong>Asunto:</strong> <?php echo htmlspecialchars($ticket['asunto']); ?></p>
@@ -106,38 +109,38 @@ $historialMensajes = obtenerHistorialMensajes($pdo, $ticket_id);
     <?php } ?>
 
     <!-- El formulario siempre debe mostrarse independientemente del historial de mensajes -->
-     
+
     <?php if ($_SESSION['tipo'] === 'tecnico') { ?>
-        
-    <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
-        <label for="estado">Nuevo Estado</label>
-        <select name="estado" required>
-            <option value="creado" <?php if ($ticket['estado'] == 'creado') echo 'selected'; ?>>Creado</option>
-            <option value="en proceso" <?php if ($ticket['estado'] == 'en proceso') echo 'selected'; ?>>En proceso</option>
-            <option value="solucionado" <?php if ($ticket['estado'] == 'solucionado') echo 'selected'; ?>>Solucionado</option>
-            <option value="cerrado" <?php if ($ticket['estado'] == 'cerrado') echo 'selected'; ?>>Cerrado</option>
-        </select><br>
-      
 
-        <label for="mensaje">Mensaje de seguimiento</label><br>
-        <textarea name="mensaje"></textarea><br><br>
-
-        <button type="submit">Guardar Cambios</button>
-    </form>
-    <?php  } ?>
-    <?php if ($_SESSION['tipo'] === 'empleado') { ?>
-        
         <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
-          
-          
-    
+            <label for="estado">Nuevo Estado</label>
+            <select name="estado" required>
+                <option value="creado" <?php if ($ticket['estado'] == 'creado') echo 'selected'; ?>>Creado</option>
+                <option value="en proceso" <?php if ($ticket['estado'] == 'en proceso') echo 'selected'; ?>>En proceso</option>
+                <option value="solucionado" <?php if ($ticket['estado'] == 'solucionado') echo 'selected'; ?>>Solucionado</option>
+                <option value="cerrado" <?php if ($ticket['estado'] == 'cerrado') echo 'selected'; ?>>Cerrado</option>
+            </select><br>
+
+
             <label for="mensaje">Mensaje de seguimiento</label><br>
             <textarea name="mensaje"></textarea><br><br>
-    
+
             <button type="submit">Guardar Cambios</button>
         </form>
-        <?php  } ?>
+    <?php  } ?>
+    <?php if ($_SESSION['tipo'] === 'empleado') { ?>
+
+        <form method="POST" action="editar_ticket.php?id=<?php echo $ticket_id; ?>">
+
+
+
+            <label for="mensaje">Mensaje de seguimiento</label><br>
+            <textarea name="mensaje"></textarea><br><br>
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    <?php  } ?>
 
 </body>
-</html>
 
+</html>

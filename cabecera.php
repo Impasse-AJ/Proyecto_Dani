@@ -121,6 +121,6 @@
         </ul>
     </header>
 
-    <div style="height: 50px;"></div> <!-- Espacio para el header fijo -->
+    <div style="height: 80px;"></div> <!-- Espacio para el header fijo -->
 </body>
 </html>
