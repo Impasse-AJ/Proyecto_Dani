@@ -1,0 +1,12 @@
+abraham@soporte.empresa.com 1234
+alejo@soporte.empresa.com 1234
+alex@soporte.empresa.com 1234
+empleado1@empresa.com 1234
+
+Ampliaciones
+Tickets realistas
+Registro usuario
+Contraseña cifrada
+Perfiles
+Recuperar contraseña
+Notificación de correo
